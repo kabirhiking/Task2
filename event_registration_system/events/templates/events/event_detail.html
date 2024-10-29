@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head><title>{{ event.title }}</title></head>
+<body>
+<h1>{{ event.title }}</h1>
+<p>{{ event.description }}</p>
+<p>Date: {{ event.date }} Time: {{ event.time }}</p>
+<p>Location: {{ event.location }}</p>
+<p>Available Seats: {{ event.available_seats|add:"-"|add:event.registrations.count }}</p>
+{% if user.is_authenticated %}
+    <button onclick="register()">Register</button>
+{% else %}
+    <p>Please <a href="/login/">login</a> to register for the event.</p>
+{% endif %}
+
+<script>
+function register() {
+    fetch("{% url 'register_event' event.id %}", {
+        method: 'POST',
+        headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+    }).then(response => response.json()).then(data => {
+        alert(data.message);
+        if (data.message === 'Successfully registered') {
+            window.location.href = "{% url 'my_registrations' %}";
+        }
+    });
+}
+</script>
+</body>
+</html>

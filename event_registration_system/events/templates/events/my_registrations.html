@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head><title>My Registrations</title></head>
+<body>
+<h1>My Registered Events</h1>
+<ul>
+    {% for registration in registrations %}
+        <li>{{ registration.event.title }} - Registered on {{ registration.registered_at }}</li>
+    {% endfor %}
+</ul>
+</body>
+</html>
